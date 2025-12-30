@@ -21,7 +21,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "campus-connect-sooty-theta.vercel.app", // frontend live link
+    origin: "https://campus-connect-sooty-theta.vercel.app", // frontend live link
     credentials: true,
   })
 );
