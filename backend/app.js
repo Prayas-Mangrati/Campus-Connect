@@ -21,7 +21,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite default
+    origin: "campus-connect-sooty-theta.vercel.app", // frontend live link
     credentials: true,
   })
 );
@@ -38,13 +38,14 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/User");
 
 const sessionConfig = {
+  name:"session",
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,     // 🔥 MUST be false for localhost
-    sameSite: "lax",   // 🔥 REQUIRED for cross-origin
+    secure: true,     // 🔥 MUST be false for localhost true for render
+    sameSite: "none",   // 🔥 REQUIRED for cross-site cookies
   },
 };
 
