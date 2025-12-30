@@ -31,6 +31,9 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.set("trust proxy", 1);
+
+
 // ---------------- SESSION & PASSPORT ----------------
 const session = require("express-session");
 const passport = require("passport");
@@ -38,14 +41,14 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/User");
 
 const sessionConfig = {
-  name:"session",
+  name: "session",
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: true,     // 🔥 MUST be false for localhost true for render
-    sameSite: "none",   // 🔥 REQUIRED for cross-site cookies
+    secure: true,
+    sameSite: "none",
   },
 };
 
