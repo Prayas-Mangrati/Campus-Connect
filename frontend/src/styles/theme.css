@@ -1,0 +1,104 @@
+:root {
+  --bg-main: #f5f7fb;
+  --card-bg: #ffffff;
+
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --secondary: #16a34a;
+
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+
+  /* gradients */
+  --gradient-bg: linear-gradient(
+    135deg,
+    #eef2ff,
+    #f5f7fb,
+    #ecfeff
+  );
+}
+
+
+
+body {
+  background-color: rgb(210, 199, 199);
+  color: var(--text-main);
+}
+.card {
+  border-radius: 12px;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #4338ca;
+}
+.btn-success {
+  background-color: var(--secondary);
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #16a34a;
+}
+.event-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+button,
+.btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+.page {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.btn-success {
+  background-color: #16a34a;
+  border: none;
+}
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: 16px;
+}
+.auth-title {
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    #06b6d4
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
