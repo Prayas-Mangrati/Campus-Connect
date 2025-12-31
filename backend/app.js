@@ -19,7 +19,7 @@ app.use(
     credentials: true,
   })
 );
-app.options("/users/*", cors());
+app.options("*", cors());
 
 /* ---------------- BODY PARSERS ---------------- */
 app.use(express.urlencoded({ extended: true }));

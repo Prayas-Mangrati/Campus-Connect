@@ -4,7 +4,7 @@ const userController=require("../controllers/users");
 const passport=require("passport");
 const {isLoggedIn}=require("../middlewares/validateEvent");
 
-router.post("/register",userController.registerUser);
+//router.post("/register",userController.registerUser);
 
 router.post(
     "/login",
