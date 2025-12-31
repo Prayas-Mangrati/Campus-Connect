@@ -1,3 +1,5 @@
+
+
 require("dotenv").config();
 const mongoose = require("mongoose");
 
@@ -17,21 +19,26 @@ cleanupOrphanRegistrations()
 .then(()=>console.log("Orphan registrations cleaned"))
 .catch(console.error);
 //-----------------fix backend cors----------
+app.set("trust proxy", 1);
 const cors = require("cors");
 
 app.use(
   cors({
-    origin: "https://campus-connect-sooty-theta.vercel.app", // frontend live link
+    origin: "https://campus-connect-sooty-theta.vercel.app",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.options("*", cors());
+
 
 
 // ---------------- BODY PARSERS ----------------
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.set("trust proxy", 1);
+
 
 
 // ---------------- SESSION & PASSPORT ----------------
