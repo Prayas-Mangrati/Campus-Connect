@@ -15,7 +15,7 @@ app.set("trust proxy", 1);
 /* ---------------- CORS (KEEP IT SIMPLE) ---------------- */
 app.use(
   cors({
-    origin: "https://campus-connect-sooty-theta.vercel.app",
+    origin: "https://campus-connect-frontend-u2ht.onrender.com",
     credentials: true,
   })
 );
