@@ -8,13 +8,12 @@ import Events from "./pages/Events";
 import EventDetails from "./pages/EventDetails";
 import MyEvents from "./pages/MyEvents";
 import NotFound from "./pages/NotFound";
+import CreateEvent from "./pages/CreateEvent";
+import EditEvent from "./pages/EditEvent";
 
 import api from "./api/axios";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-import CreateEvent from "./pages/CreateEvent";
-import EditEvent from "./pages/EditEvent";
-
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,6 +32,7 @@ function App() {
   return (
     <BrowserRouter>
       <Navbar user={user} setUser={setUser} />
+
       <Routes>
         <Route path="/" element={<Events />} />
 
@@ -62,14 +62,17 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
 
-        <Route path="/events/:id" element={<EventDetails user={user}/>} />
+        <Route path="/events/:id" element={<EventDetails user={user} />} />
 
-        <Route path="/events/:id/edit" element={<EditEvent />} />
-
-        <Route path="*" element={<NotFound />} />
-        
+        <Route
+          path="/events/:id/edit"
+          element={
+            <ProtectedRoute user={user}>
+              <EditEvent />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/events/new"
@@ -77,13 +80,10 @@ function App() {
             <ProtectedRoute user={user}>
               <CreateEvent />
             </ProtectedRoute>
-            
           }
         />
-        
 
         <Route path="*" element={<NotFound />} />
-
       </Routes>
     </BrowserRouter>
   );
