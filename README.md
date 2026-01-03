@@ -82,5 +82,6 @@ Screenshots are available in the `/screenshots` folder:
 ##👤 Author
 
 Prayas Mangrati
+
 B.Tech Computer Science & Engineering
 Aspiring Software Engineer
