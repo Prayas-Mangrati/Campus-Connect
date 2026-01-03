@@ -15,7 +15,7 @@ app.set("trust proxy", 1);
 /* ---------------- CORS (KEEP IT SIMPLE) ---------------- */
 app.use(
   cors({
-    origin: "new frontend url here",
+    origin: "https://campus-connect-frontend-byzd.onrender.com",
     credentials: true,
   })
 );
