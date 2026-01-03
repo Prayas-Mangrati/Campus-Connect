@@ -19,7 +19,7 @@ app.use(
     credentials: true,
   })
 );
-app.options("*", cors());
+
 
 /* ---------------- BODY PARSERS ---------------- */
 app.use(express.urlencoded({ extended: true }));
@@ -47,8 +47,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
     },
   })
 );
