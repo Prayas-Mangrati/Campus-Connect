@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "new backend url here",
+  baseURL: "https://campus-connect-7yuv.onrender.com",
   withCredentials: true,
 });
 
