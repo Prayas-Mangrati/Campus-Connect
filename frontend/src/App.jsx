@@ -10,6 +10,7 @@ import MyEvents from "./pages/MyEvents";
 import NotFound from "./pages/NotFound";
 import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
+import Footer from "./components/Footer";
 
 import api from "./api/axios";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -31,60 +32,66 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Navbar user={user} setUser={setUser} />
+      <div className="app-container">
+        <Navbar user={user} setUser={setUser} />
 
-      <Routes>
-        <Route path="/" element={<Events />} />
+        <div className="app-content">
+          <Routes>
+            <Route path="/" element={<Events />} />
 
-        <Route
-          path="/login"
-          element={
-            <PublicRoute user={user}>
-              <Login setUser={setUser} />
-            </PublicRoute>
-          }
-        />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute user={user}>
+                  <Login setUser={setUser} />
+                </PublicRoute>
+              }
+            />
 
-        <Route
-          path="/signup"
-          element={
-            <PublicRoute user={user}>
-              <Signup setUser={setUser} />
-            </PublicRoute>
-          }
-        />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute user={user}>
+                  <Signup setUser={setUser} />
+                </PublicRoute>
+              }
+            />
 
-        <Route
-          path="/my-events"
-          element={
-            <ProtectedRoute user={user}>
-              <MyEvents />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/my-events"
+              element={
+                <ProtectedRoute user={user}>
+                  <MyEvents />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route path="/events/:id" element={<EventDetails user={user} />} />
+            <Route path="/events/:id" element={<EventDetails user={user} />} />
 
-        <Route
-          path="/events/:id/edit"
-          element={
-            <ProtectedRoute user={user}>
-              <EditEvent />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/events/:id/edit"
+              element={
+                <ProtectedRoute user={user}>
+                  <EditEvent />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route
-          path="/events/new"
-          element={
-            <ProtectedRoute user={user}>
-              <CreateEvent />
-            </ProtectedRoute>
-          }
-        />
+            <Route
+              path="/events/new"
+              element={
+                <ProtectedRoute user={user}>
+                  <CreateEvent />
+                </ProtectedRoute>
+              }
+            />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
