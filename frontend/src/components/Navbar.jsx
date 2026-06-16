@@ -11,10 +11,31 @@ function Navbar({ user, setUser }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg px-4 shadow-sm"
-     style={{backgroundColor:"black"}}>
-      <Link className="navbar-brand text-white" to="/">
-        <i>CampusConnect</i>
+    <nav
+      className="navbar px-4 py-4 shadow-sm d-flex align-items-center"
+      style={{ backgroundColor: "#0f172a", border: "2px solid orange" }}
+    >
+      <img
+        src="/Campus_Connect_logo.png"
+        alt="Logo"
+        className="brand-glow-logo"
+        style={{ width: "60px" }}
+      />
+      <Link className="navbar-brand text-white brand-link" to="/">
+        <i>
+          <span
+            className="fw-bold brand-glow-text"
+            style={{ color: "#4b8cf6" }}
+          >
+            Campus
+          </span>
+          <span
+            className="fw-bold brand-glow-text"
+            style={{ color: "#f97316" }}
+          >
+            Connect
+          </span>
+        </i>
       </Link>
 
       <div className="ms-auto">

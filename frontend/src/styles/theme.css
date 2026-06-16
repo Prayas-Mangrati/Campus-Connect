@@ -21,7 +21,7 @@
 
 
 body {
-  background-color: rgb(210, 199, 199);
+  background-color: #eef2ff;
   color: var(--text-main);
 }
 .card {
@@ -55,10 +55,11 @@ body {
 button,
 .btn {
   transition: all 0.2s ease-in-out;
+  border:solid 2px white;
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: translateY(1px);
 }
 .page {
   animation: fadeIn 0.3s ease-in;
@@ -100,6 +101,7 @@ button,
     var(--primary),
     #06b6d4
   );
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
@@ -118,4 +120,30 @@ html, body, #root {
 
 .app-content {
   flex: 1;
+}
+
+.brand-glow-text {
+  transition: text-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.brand-glow-logo {
+  transition: filter 0.2s ease;
+}
+
+.brand-link {
+  text-decoration: none;
+}
+
+.brand-link:hover .brand-glow-text,
+.brand-link:focus-visible .brand-glow-text {
+  text-shadow:
+    0 0 6px rgba(59, 130, 246, 0.9),
+    0 0 14px rgba(249, 115, 22, 0.75);
+}
+
+.brand-glow-logo:hover,
+.brand-glow-logo:focus-visible {
+  filter:
+    drop-shadow(0 0 6px rgba(59, 130, 246, 0.8))
+    drop-shadow(0 0 10px rgba(249, 115, 22, 0.6));
 }
