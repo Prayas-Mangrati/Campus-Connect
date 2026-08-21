@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import toast from "react-hot-toast";
 
 function EventDetails({ user }) {
   const { id } = useParams();
@@ -29,7 +30,7 @@ function EventDetails({ user }) {
       .get("/users/me/registrations")
       .then((res) => {
         const isRegistered = res.data.some(
-          (reg) => reg.event && reg.event._id === id
+          (reg) => reg.event && reg.event._id === id,
         );
         setRegistered(isRegistered);
       })
@@ -65,9 +66,10 @@ function EventDetails({ user }) {
     try {
       await api.post(`/events/${id}/register`);
       setRegistered(true);
+      toast.success("Registered successfully!");
       setParticipantsCount((prev) => prev + 1);
     } catch (err) {
-      alert("Registration failed");
+      toast.error("Registration failed");
     }
   };
 
@@ -75,15 +77,16 @@ function EventDetails({ user }) {
     try {
       await api.delete(`/events/${id}/register`);
       setRegistered(false);
+      toast.success("Unregistered successfully!");
       setParticipantsCount((prev) => prev - 1);
     } catch (err) {
-      alert("Unregister failed");
+      toast.error("Unregister failed");
     }
   };
 
   const handleDeleteEvent = async () => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this event? This action cannot be undone."
+      "Are you sure you want to delete this event? This action cannot be undone.",
     );
     if (!confirmDelete) return;
 
@@ -91,7 +94,18 @@ function EventDetails({ user }) {
       await api.delete(`/events/${id}`);
       navigate("/");
     } catch (err) {
-      alert(err.response?.data?.error || "Unable to delete event");
+      toast.error(err.response?.data?.error || "Unable to delete event");
+    }
+  };
+  const handleToggleStatus = async () => {
+    try {
+      const res = await api.patch(`/events/${id}/status`);
+
+      setEvent(res.data.event);
+
+      toast.success(res.data.message);
+    } catch (err) {
+      toast.error(err.response?.data?.error || "Unable to update event status");
     }
   };
 
@@ -99,89 +113,166 @@ function EventDetails({ user }) {
   if (!event) return null;
 
   return (
-    <div className="container mt-5 page" style={{ maxWidth: "700px" }}>
-      <div className="card shadow-sm">
-        <div className="card-body">
-          <h3 className="card-title">{event.title}</h3>
-          <p className="text-muted">📍 {event.location}</p>
-          <p className="text-muted">
-            👥 {participantsCount} participant{participantsCount !== 1 && "s"}
-          </p>
+    <div className="event-details-page page">
+      {/* HERO */}
+      <section className="event-hero-image">
+        <div className="event-hero-banner">
+          {event.banner ? (
+            <img
+              src={event.banner}
+              alt={event.title}
+              className="event-banner-img"
+            />
+          ) : (
+            <span className="event-banner-text">
+              <i>Campus Event</i>
+            </span>
+          )}
+        </div>
 
-          <hr />
+        <div className="event-hero-content">
+          <span className="event-tag">📅 {event.category}</span>
 
-          <p>{event.description}</p>
+          <h1>{event.title}</h1>
 
-          <div className="mt-4">
-            {!user && (
-              <p className="text-muted">
-                <span
-                  style={{ cursor: "pointer", color: "#0d6efd" }}
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </span>{" "}
-                to register for this event
-              </p>
-            )}
+          <div className="event-meta">
+            <span>📍 {event.location}</span>
 
-            {user && isOwner && (
-              <div className="d-flex align-items-center gap-3">
-                <p className="text-muted mb-0">
-                  👑 You are the organizer of this event
-                </p>
-               <br/>
-              
+            <span>
+              📅{" "}
+              {event.date
+                ? new Date(event.date).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })
+                : "Date not specified"}
+            </span>
 
-                <button
-                  className="btn btn-success ms-auto"
-                  onClick={() => navigate(`/events/${id}/edit`)}
-                >
-                  Edit Event
-                </button>
-                <button
-                  className="btn btn-danger ms-auto"
-                  onClick={handleDeleteEvent}
-                >
-                  Delete Event
-                </button>
-              </div>
-            )}
+            <span>🕒 {event.time || "Time not specified"}</span>
 
-            {user && !isOwner && registered && (
-              <button className="btn btn-danger" onClick={handleUnregister}>
-                Unregister
-              </button>
-            )}
-
-            {user && !isOwner && !registered && (
-              <button className="btn btn-success" onClick={handleRegister}>
-                Register
-              </button>
-            )}
-
-            {isOwner && (
-              <div className="mt-5">
-                <h5>Registered Participants</h5>
-
-                {participants.length === 0 ? (
-                  <p className="text-muted">No participants yet</p>
-                ) : (
-                  <ul className="list-group">
-                    {participants.map((reg) => (
-                      <li key={reg._id} className="list-group-item">
-                        <strong>{reg.user.username}</strong>
-                        <br />
-                        <small className="text-muted">{reg.user.email}</small>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
+            <span>
+              👥 {participantsCount} Participant
+              {participantsCount !== 1 && "s"}
+            </span>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* DESCRIPTION */}
+      {event.status === "Cancelled" && (
+        <div className="alert alert-warning text-center">
+          🚫 This event has been cancelled by the organizer. Registrations are
+          closed.
+        </div>
+      )}
+      <section className="event-description-card">
+        <h3>About this Event</h3>
+
+        <p>{event.description}</p>
+      </section>
+
+      {/* ACTIONS */}
+
+      <section className="event-action-card">
+        {/* Not Logged In */}
+        {!user ? (
+          <>
+            <p className="login-message">Login to register for this event.</p>
+
+            <button
+              className="btn login-btn"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </button>
+          </>
+        ) : user && isOwner ? (
+          <>
+            <div className="owner-box">
+              <div>
+                <h5>👑 You're the Organizer</h5>
+                <p>You can edit this event or delete it permanently.</p>
+              </div>
+
+              <div className="owner-buttons">
+                <button
+                  className="btn btn-success"
+                  onClick={() => navigate(`/events/${id}/edit`)}
+                >
+                  ✏️ Edit Event
+                </button>
+
+                <button
+                  className={`btn ${
+                    event.status === "Cancelled" ? "btn-success" : "btn-warning"
+                  }`}
+                  onClick={handleToggleStatus}
+                >
+                  {event.status === "Cancelled"
+                    ? "Reopen Event"
+                    : "🚫 Cancel Event"}
+                </button>
+
+                <button className="btn btn-danger" onClick={handleDeleteEvent}>
+                  🗑 Delete Event
+                </button>
+              </div>
+            </div>
+          </>
+        ) : registered ? (
+          <button
+            className="btn btn-danger register-btn"
+            onClick={handleUnregister}
+          >
+            Unregister
+          </button>
+        ) : event.status === "Cancelled" ? (
+          <button className="btn btn-secondary register-btn" disabled>
+            Registration Closed
+          </button>
+        ) : (
+          <button
+            className="btn btn-success register-btn"
+            onClick={handleRegister}
+          >
+            Register Now
+          </button>
+        )}
+      </section>
+
+      {/* PARTICIPANTS */}
+
+      {isOwner && (
+        <section className="participants-card">
+          <h3>Registered Participants</h3>
+
+          {participants.length === 0 ? (
+            <div className="empty-state">
+              <h5>No participants yet</h5>
+              <p>Once students register, they'll appear here.</p>
+            </div>
+          ) : (
+            <div className="participant-list">
+              {participants.map((reg) => (
+                <div className="participant-item" key={reg._id}>
+                  <div>
+                    <h5>{reg.user.username}</h5>
+
+                    <p>📧 {reg.user.email}</p>
+
+                    <p>🎓 Reg. No.: {reg.user.registrationNumber || "N/A"}</p>
+
+                    <p>🏫 Department: {reg.user.department || "N/A"}</p>
+
+                    <p>📚 Year: {reg.user.year || "N/A"}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
     </div>
   );
 }

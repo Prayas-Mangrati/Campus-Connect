@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
+import EventCard from "../components/EventCard";
 
 function MyEvents() {
   const [createdEvents, setCreatedEvents] = useState([]);
@@ -22,56 +23,65 @@ function MyEvents() {
   if (loading) return <p className="text-center mt-5">Loading...</p>;
 
   return (
-    <div className="container mt-5 page">
-      <div style={{display:"flex",justifyContent:"center"}}>
-        <h2 className="mb-4" style={{display:"inline-block",backgroundColor:"white",width:"11rem",height:"3rem",textAlign:"center",justifyContent:"center",border:"2px solid black",borderRadius:"6px"}}><b>My Events</b></h2>
-      </div>
+    <div className="events-page page">
+      {/* HERO */}
 
-      {/* Created Events */}
-      <section className="mb-5">
-        <h4>~Events I Created</h4>
+      <section className="hero-section">
+        <h1 className="hero-title">My Dashboard</h1>
+
+        <p className="hero-subtitle">
+          Manage the events you've created and keep track of the events you've
+          registered for.
+        </p>
+      </section>
+
+      {/* CREATED EVENTS */}
+
+      <section className="events-section">
+        <div className="section-header">
+          <h2 className="events-heading">📅 Events I Created</h2>
+
+          <span className="event-count">
+            {createdEvents.length} Event
+            {createdEvents.length !== 1 && "s"}
+          </span>
+        </div>
 
         {createdEvents.length === 0 ? (
-          <p className="text-muted">You haven’t created any events yet.</p>
+          <div className="empty-state">
+            <h4>No Events Created</h4>
+            <p>Create your first campus event.</p>
+          </div>
         ) : (
-          <div className="row">
-            {createdEvents.map(event => (
-              <div key={event._id} className="col-md-4 mb-3">
-                <div className="card event-card">
-                  <div className="card-body">
-                    <h5>{event.title}</h5>
-                    <p className="text-muted">{event.location}</p>
-                    <Link to={`/events/${event._id}`} className="btn btn-sm btn-primary">
-                      View
-                    </Link>
-                  </div>
-                </div>
-              </div>
+          <div className="row mt-4">
+            {createdEvents.map((event) => (
+              <EventCard key={event._id} event={event} />
             ))}
           </div>
         )}
       </section>
 
-      {/* Registered Events */}
-      <section>
-        <h4>~Events I Registered For</h4>
+      {/* REGISTERED EVENTS */}
+
+      <section className="events-section mt-5">
+        <div className="section-header">
+          <h2 className="events-heading">🎟 Registered Events</h2>
+
+          <span className="event-count">
+            {registeredEvents.length} Event
+            {registeredEvents.length !== 1 && "s"}
+          </span>
+        </div>
 
         {registeredEvents.length === 0 ? (
-          <p className="text-muted">You haven’t registered for any events yet.</p>
+          <div className="empty-state">
+            <h4>No Registrations Yet</h4>
+            <p>Register for events to see them here.</p>
+          </div>
         ) : (
-          <div className="row">
-            {registeredEvents.map(event => (
-              <div key={event._id} className="col-md-4 mb-3">
-                <div className="card event-card">
-                  <div className="card-body">
-                    <h5>{event.title}</h5>
-                    <p className="text-muted">{event.location}</p>
-                    <Link to={`/events/${event._id}`} className="btn btn-sm btn-secondary">
-                      View
-                    </Link>
-                  </div>
-                </div>
-              </div>
+          <div className="row mt-4">
+            {registeredEvents.map((event) => (
+              <EventCard key={event._id} event={event}/>
             ))}
           </div>
         )}

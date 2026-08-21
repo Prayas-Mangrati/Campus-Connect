@@ -3,19 +3,25 @@ const Joi=require("joi");
 const Event=require("../models/Event");
 
 //CREATE validation (POST)
-const createEventSchema=Joi.object({
-    title: Joi.string().required(),
-    description:Joi.string().allow(""),
-    location:Joi.string().required(),
-    date:Joi.date(),
+const createEventSchema = Joi.object({
+  title: Joi.string().required(),
+  description: Joi.string().allow(""),
+  category: Joi.string().required(),
+  location: Joi.string().required(),
+  date: Joi.date().required(),
+  time: Joi.string().required(),
+  banner: Joi.any().allow(null),
 });
 
 //UPDATE validation (PATCH)
-const updateEventSchema=Joi.object({
-    title: Joi.string(),
-    description:Joi.string().allow(""),
-    location:Joi.string(),
-    date:Joi.date(),
+const updateEventSchema = Joi.object({
+  title: Joi.string(),
+  description: Joi.string().allow(""),
+  category: Joi.string(),
+  location: Joi.string(),
+  date: Joi.date(),
+  time: Joi.string(),
+  banner: Joi.any().allow(null),
 }).min(1);//atleast one field must be present
 
 module.exports.validateCreateEvent=(req,res,next)=>{

@@ -7,9 +7,9 @@ const ExpressError = require("../utils/ExpressError");
  */
 module.exports.signup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, registrationNumber, department, year, password } = req.body;
 
-    const user = new User({ username, email });
+    const user = new User({ username, email, registrationNumber, department, year });
     const registeredUser = await User.register(user, password);
 
     req.login(registeredUser, (err) => {
@@ -19,7 +19,7 @@ module.exports.signup = async (req, res, next) => {
   } catch (err) {
     if (err.code === 11000) {
       return res.status(400).json({
-        error: "Username or email already exists",
+        error: "Username, Registration Number or email already exists",
       });
     }
     next(err);

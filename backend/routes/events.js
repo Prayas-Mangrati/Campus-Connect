@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const eventController = require("../controllers/events");
+const multer = require("multer");
+const { storage } = require("../utils/cloudConfig");
 
+const upload = multer({ storage });
 const {
   validateCreateEvent,
   validateUpdateEvent,
@@ -18,26 +21,37 @@ router.patch(
   "/:id",
   isLoggedIn,
   isEventOwner,
+  upload.single("banner"),
   validateUpdateEvent,
-  eventController.updateEvent
+  eventController.updateEvent,
 );
 
 router.get(
   "/:id/participants",
   isLoggedIn,
   isEventOwner,
-  eventController.getEventParticipants
+  eventController.getEventParticipants,
 );
 
 router.delete("/:id/register", isLoggedIn, eventController.unregisterFromEvent);
-
+router.patch(
+  "/:id/status",
+  isLoggedIn,
+  isEventOwner,
+  eventController.toggleEventStatus,
+);
 //POST/events
-router.post("/", isLoggedIn, validateCreateEvent, eventController.createEvent);
+router.post(
+  "/",
+  isLoggedIn,
+  upload.single("banner"),
+  validateCreateEvent,
+  eventController.createEvent,
+);
 
 router.post("/:id/register", isLoggedIn, eventController.registerForEvent);
 
 router.get("/:id/participants/count", eventController.getParticipantsCount);
 router.get("/mine/created", isLoggedIn, eventController.getMyCreatedEvents);
-
 
 module.exports = router;

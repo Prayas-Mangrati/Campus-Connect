@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer
-      className="text-center py-3 mt-5 footer"
+      className="text-center py-2 footer"
       style={{
         backgroundColor: "#0f172a",
         color: "white",
@@ -11,7 +11,7 @@ function Footer() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "1rem",
+        gap: "0.4rem",
         border: "2px solid orange",
       }}
     >

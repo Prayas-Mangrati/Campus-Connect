@@ -4,7 +4,7 @@ const Registration = require("../models/Registration");
 
 module.exports.getAllEvents = async (req, res, next) => {
   try {
-    const events = await Event.find({});
+    const events = await Event.find({}).sort({ createdAt: -1 });
     res.json(events);
   } catch (err) {
     next(err);
@@ -14,6 +14,9 @@ module.exports.createEvent = async (req, res, next) => {
   try {
     const event = new Event(req.body);
     event.owner = req.user._id;
+    if (req.file) {
+      event.banner = req.file.path;
+    }
     await event.save();
     res.status(201).json(event);
   } catch (err) {
@@ -58,15 +61,22 @@ module.exports.deleteEvent = async (req, res, next) => {
 
 module.exports.updateEvent = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const updatedEvent = await Event.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updatedEvent) {
+    const{ id } = req.params;
+    const event = await Event.findById(id);
+
+    if (!event) {
       throw new ExpressError(404, "Event not found");
     }
-    res.json(updatedEvent);
+
+    Object.assign(event, req.body);
+
+    if (req.file) {
+      event.banner = req.file.path;
+    }
+
+    await event.save();
+
+    res.json(event);
   } catch (err) {
     next(err);
   }
@@ -110,7 +120,7 @@ module.exports.getEventParticipants = async (req, res, next) => {
     const { id } = req.params;
     const registrations = await Registration.find({ event: id }).populate(
       "user",
-      "username email"
+      "username email registrationNumber department year",
     );
     res.json(registrations);
   } catch (err) {
@@ -151,10 +161,34 @@ module.exports.getParticipantsCount = async (req, res, next) => {
 };
 module.exports.getMyCreatedEvents = async (req, res, next) => {
   try {
-    const events = await Event.find({ owner: req.user._id });
+    const events = await Event.find({ owner: req.user._id }).sort({
+      createdAt: -1,
+    });
     res.json(events);
   } catch (err) {
     next(err);
   }
 };
 
+module.exports.toggleEventStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      throw new ExpressError(404, "Event not found");
+    }
+
+    event.status = event.status === "Active" ? "Cancelled" : "Active";
+
+    await event.save();
+
+    res.json({
+      message: `Event ${event.status.toLowerCase()} successfully`,
+      event,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

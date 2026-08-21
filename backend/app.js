@@ -15,8 +15,8 @@ app.set("trust proxy", 1);
 /* ---------------- CORS (KEEP IT SIMPLE) ---------------- */
 app.use(
   cors({
-    // origin: "https://campus-connect-frontend-byzd.onrender.com",
-    origin: "http://localhost:5173",
+     origin: "https://campus-connect-frontend-byzd.onrender.com",
+    //origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -48,7 +48,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "none",
     },
   })

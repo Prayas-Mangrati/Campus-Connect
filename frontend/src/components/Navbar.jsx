@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../api/auth";
-
+import toast from "react-hot-toast";
 function Navbar({ user, setUser }) {
   const navigate = useNavigate();
 
@@ -8,11 +8,12 @@ function Navbar({ user, setUser }) {
     await logout();
     setUser(null);
     navigate("/login");
+    toast.success("Logged out successfully");
   };
 
   return (
     <nav
-      className="navbar px-4 py-4 shadow-sm d-flex align-items-center"
+      className="navbar px-4 py-3 shadow-sm d-flex align-items-center"
       style={{ backgroundColor: "#0f172a", border: "2px solid orange" }}
     >
       <img
