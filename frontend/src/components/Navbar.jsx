@@ -1,26 +1,34 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../api/auth";
 import toast from "react-hot-toast";
 
 function Navbar({ user, setUser }) {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
     setUser(null);
+    setMenuOpen(false);
     navigate("/login");
     toast.success("Logged out successfully");
   };
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
   return (
     <nav
-      className="navbar navbar-expand-lg px-3 px-md-4 py-3 shadow-sm"
+      className="navbar px-3 px-md-4 py-3 shadow-sm"
       style={{
         backgroundColor: "#0f172a",
         border: "2px solid orange",
       }}
     >
       <div className="container-fluid">
+
         {/* BRAND */}
         <div className="d-flex align-items-center">
           <img
@@ -30,7 +38,11 @@ function Navbar({ user, setUser }) {
             style={{ width: "60px" }}
           />
 
-          <Link className="navbar-brand text-white brand-link ms-2" to="/">
+          <Link
+            className="navbar-brand text-white brand-link ms-2"
+            to="/"
+            onClick={closeMenu}
+          >
             <i>
               <span
                 className="fw-bold brand-glow-text"
@@ -38,6 +50,7 @@ function Navbar({ user, setUser }) {
               >
                 Campus
               </span>
+
               <span
                 className="fw-bold brand-glow-text"
                 style={{ color: "#f97316" }}
@@ -48,57 +61,68 @@ function Navbar({ user, setUser }) {
           </Link>
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* HAMBURGER */}
         <button
-          className="navbar-toggler"
+          className="navbar-toggler custom-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#campusNavbar"
-          aria-controls="campusNavbar"
-          aria-expanded="false"
+          onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle navigation"
-          style={{
-            borderColor: "white",
-          }}
         >
-          <span
-            className="navbar-toggler-icon"
-            style={{
-              filter: "invert(1)",
-            }}
-          ></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
         </button>
 
-        {/* NAVIGATION */}
-        <div className="collapse navbar-collapse" id="campusNavbar">
-          <div className="ms-auto d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 mt-3 mt-lg-0">
+        {/* MENU */}
+        <div className={`navbar-menu ${menuOpen ? "open" : ""}`}>
+          <div className="navbar-actions">
             {user ? (
               <>
-                <Link className="btn btn-primary" to="/my-events">
+                <Link
+                  className="btn btn-primary"
+                  to="/my-events"
+                  onClick={closeMenu}
+                >
                   My Events
                 </Link>
 
-                <Link to="/events/new" className="btn btn-primary">
+                <Link
+                  className="btn btn-primary"
+                  to="/events/new"
+                  onClick={closeMenu}
+                >
                   + Create Event
                 </Link>
 
-                <button className="btn btn-danger" onClick={handleLogout}>
+                <button
+                  className="btn btn-danger"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link className="btn btn-primary" to="/login">
+                <Link
+                  className="btn btn-primary"
+                  to="/login"
+                  onClick={closeMenu}
+                >
                   Login
                 </Link>
 
-                <Link className="btn btn-primary" to="/signup">
+                <Link
+                  className="btn btn-primary"
+                  to="/signup"
+                  onClick={closeMenu}
+                >
                   Signup
                 </Link>
               </>
             )}
           </div>
         </div>
+
       </div>
     </nav>
   );

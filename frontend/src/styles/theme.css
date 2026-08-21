@@ -1467,3 +1467,64 @@ input[type="file"]{
     height: 100%;
     object-fit: cover;
 }
+/* ================= RESPONSIVE NAVBAR ================= */
+
+.custom-toggler {
+    display: none;
+    width: 45px;
+    height: 40px;
+    padding: 7px;
+    border: 1px solid rgba(255,255,255,.5) !important;
+    border-radius: 10px;
+    background: transparent;
+}
+
+.hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    margin: 5px auto;
+    background: white;
+    border-radius: 5px;
+}
+
+.navbar-menu {
+    margin-left: auto;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 991px) {
+
+    .custom-toggler {
+        display: block;
+    }
+
+    .navbar-menu {
+        display: none;
+        width: 100%;
+        padding-top: 18px;
+    }
+
+    .navbar-menu.open {
+        display: block;
+    }
+
+    .navbar-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .navbar-actions .btn {
+        width: 100%;
+    }
+
+}
