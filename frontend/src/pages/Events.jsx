@@ -98,7 +98,7 @@ function Events() {
           </div>
         )}
 
-        <div className="row mt-4">
+        <div className="row mt-4 mx-0">
           {filteredEvents.map((event) => (
             <EventCard key={event._id} event={event} />
           ))}

@@ -115,12 +115,6 @@ html, body, #root {
   margin:0;
 }
 
-html,
-body,
-#root{
-    height:100%;
-    margin:0;
-}
 
 .app-container{
     min-height:100vh;
@@ -447,10 +441,11 @@ box-shadow:0 0 0 5px rgba(79,70,229,.12);
 
 /* ================= HOME PAGE ================= */
 
-.events-page{
-    max-width:1350px;
-    margin:auto;
-    padding:40px 20px;
+.events-page {
+    width: 100%;
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 40px 20px;
 }
 
 /* HERO */
@@ -1532,4 +1527,15 @@ input[type="file"]{
         font-size: 14px;
     }
 
+}
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
 }
