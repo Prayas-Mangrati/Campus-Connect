@@ -1510,7 +1510,7 @@ input[type="file"]{
     .navbar-menu {
         display: none;
         width: 100%;
-        padding-top: 18px;
+        padding-top: 15px;
     }
 
     .navbar-menu.open {
@@ -1518,13 +1518,18 @@ input[type="file"]{
     }
 
     .navbar-actions {
-        flex-direction: column;
-        align-items: stretch;
-        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .navbar-actions .btn {
-        width: 100%;
+        width: auto;
+        min-width: 120px;
+        padding: 7px 14px;
+        font-size: 14px;
     }
 
 }
