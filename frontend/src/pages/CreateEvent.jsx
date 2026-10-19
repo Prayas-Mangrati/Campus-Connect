@@ -44,11 +44,7 @@ function CreateEvent() {
       formData.append("banner", form.banner);
     }
 
-    const res = await api.post("/events", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const res = await api.post("/events", formData);
 
     toast.success("Event created successfully");
 
